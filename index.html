@@ -1,1 +1,66 @@
+<html >  
+<head>  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	  <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9, IE=11"/> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://www.govmap.gov.il/govmap/api/govmap.api.js"></script> 
 
+<script type="text/javascript">  
+
+		//var my_token = "5a4b8472-b95b-4687-8179-0ccb621c7990"; //
+        my_token ='aafedfe5-8dfa-4fd5-9af9-8b95759447bd'; // my github
+		$(function(){
+						
+			govmap.createMap('map_div',{
+				token: my_token,
+	            visibleLayers: [],
+	            layers: ["LOCALITY_210410"],    
+	            showXY: true,
+	            identifyOnClick:true  
+				
+	         }); 
+			 const queryString = window.location.search;
+			 const urlParams = new URLSearchParams(queryString);
+			 const WKT = urlParams.get('wkt');
+			 if (WKT)
+			 {
+			
+			 console.log(WKT);
+             //var wkt = "POLYGON((151612.40 534674.88, 215112.52 538643.64, 98431.04 445774.70, 74618.49 521974.85, 80968.50 552931.17, 151612.40 533881.13, 151612.40 534674.88))"
+
+            var bubbleContent = "<div style='border: 1px solid #525252; margin: 10px;padding: 10px;'><div style='background-color: yellow;'>{0}</div><div  style='background-color: blue;'>{1}</div></div>";
+                            var data = {
+                                'wkts': [WKT],
+                                'geomData': [{ 'name': 'test1', 'aaa': 1 }],
+                                'showBubble':false, 
+                                'names': ['p1'],
+                            'geometryType': govmap.drawType.Polygon,
+                            'defaultSymbol':
+                                {
+                                    'outlineColor': [0, 0, 255, 1],
+                                    'outlineWidth': 1,
+                                    'fillColor': [0, 255, 0, 0.5]
+                                },
+                            'symbols': [],
+                            'clearExisting': true,
+                            'data': {
+                                    'tooltips': ['tooltip1'],
+                                    'headers': ['header1'],
+                                    'bubbles': [''],
+                                    'bubbleUrl': 'http://www.porterdavis.com.au/~/media/homes/astor%20grange/lot%20123%20liverpool%20street%20upc/upper-point-cook---astor-grange-54---0741_long-island-facade.jpg?as=1&h=649&la=en&w=1400&crop=1'
+                                }
+                        };
+                        govmap.displayGeometries(data).progress(function (e)
+                        {
+                            console.log(e);
+                            //alert(e.data.geomData.name);
+                        });
+                }
+		});
+	
+</script>  
+</head>  
+<body style="direction: rtl;">
+        <div id="map_div" style="width:600px;height:600px"></div>
+</body>  
+</html>
